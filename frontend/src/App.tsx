@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { connectWS } from "./ws";
 import axios from "axios";
 // Removed 'process' import as it's not available in the browser environment
+// Removed 'process' import as it's not available in the browser environment
 
 const App = () => {
     const lastNotice = useRef<{ name: string; ts: number } | null>(null); // dedupe join
@@ -102,7 +103,8 @@ const App = () => {
 useEffect(() => {
   (async () => {
     try {
-      const res = await axios.get('api/messages');
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
+      const res = await axios.get(`${backendUrl}/api/messages?room=default`);
       const serverMsgs = res.data.map((m: any) => ({
         id: m._id ?? m.id ?? Date.now(),
         sender: m.sender,
@@ -139,7 +141,8 @@ useEffect(() => {
     socket.current.emit("join", trimmed);
     setUserName(trimmed);
     try {
-      await axios.post('api/users', { name: trimmed });
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
+      await axios.post(`${backendUrl}/api/users`, { name: trimmed });
     } catch (error) {
       console.error("Error saving user:", error);
     }
