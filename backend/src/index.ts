@@ -13,7 +13,7 @@ import { fileURLToPath } from "url";
 const app = express();
 const server = createServer(app);
 const io = new Server(server, {
-  cors: { origin: "*" },
+  cors: { origin: "https://chat-mu73.onrender.com" },
 });
 
 app.use(express.json());
