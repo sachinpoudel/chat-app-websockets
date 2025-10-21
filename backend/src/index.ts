@@ -8,6 +8,7 @@ import { Message } from "./model/msgSchema.js";
 import { addMsg, getMessages } from "./controller/msgController.js";
 import { User } from "./model/nameSchema.js";
 import path from "path";
+import { fileURLToPath } from "url";
 
 const app = express();
 const server = createServer(app);
@@ -135,10 +136,12 @@ app.get("/api/messages", getMessages);
 
 app.get("/healthz", (_req, res) => res.send("ok"));
 
-app.use(express.static(path.join(__dirname, "../client/dist")));
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/dist", "index.html"));
+  res.sendFile(path.join(__dirname, "../frontend/dist", "index.html"));
 });
 
 export default app;
