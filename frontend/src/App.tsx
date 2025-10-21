@@ -100,23 +100,21 @@ const App = () => {
   }, [userName]);
 
   // Fetch history once (default room)
+// 
 useEffect(() => {
   (async () => {
     try {
-      const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
-      const res = await axios.get(`${backendUrl}/api/messages?room=default`);
-      const serverMsgs = res.data.map((m: any) => ({
-        id: m._id ?? m.id ?? Date.now(),
-        sender: m.sender,
-        text: m.message?.text ?? m.text,
-        ts: new Date(m.ts).getTime(),
-      }));
-      const cached = (() => {
-        try { return JSON.parse(localStorage.getItem("messages") || "[]"); } catch { return []; }
-      })();
-      const systemOnly = cached.filter((m: any) => m?.sender === "system");
-      const merged = [...serverMsgs, ...systemOnly].sort((a, b) => a.ts - b.ts);
-      setMessages(merged);
+      const base = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
+      const res = await axios.get(`${base}/api/messages`);
+      const serverMsgs = res.data
+        .map((m: any) => ({
+          id: m._id ?? m.id ?? Date.now(),
+          sender: m.sender,
+          text: m.message?.text ?? m.text,
+          ts: new Date(m.ts).getTime(),
+        }))
+        .sort((a: any, b: any) => a.ts - b.ts);
+      setMessages(serverMsgs);
     } catch (error) {
       console.error("Error fetching messages:", error);
     }
