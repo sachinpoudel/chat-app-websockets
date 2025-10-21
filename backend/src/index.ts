@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 import { Message } from "./model/msgSchema.js";
 import { addMsg, getMessages } from "./controller/msgController.js";
 import { User } from "./model/nameSchema.js";
+import path from "path";
 
 const app = express();
 const server = createServer(app);
@@ -134,6 +135,10 @@ app.get("/api/messages", getMessages);
 
 app.get("/healthz", (_req, res) => res.send("ok"));
 
-server.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+app.use(express.static(path.join(__dirname, "../client/dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/dist", "index.html"));
 });
+
+export default app;

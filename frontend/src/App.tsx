@@ -102,8 +102,7 @@ const App = () => {
 useEffect(() => {
   (async () => {
     try {
-      const url = import.meta.env.VITE_API_URL || "http://localhost:3000";
-      const res = await axios.get(`${url}/api/messages`);
+      const res = await axios.get('api/messages');
       const serverMsgs = res.data.map((m: any) => ({
         id: m._id ?? m.id ?? Date.now(),
         sender: m.sender,
@@ -140,8 +139,7 @@ useEffect(() => {
     socket.current.emit("join", trimmed);
     setUserName(trimmed);
     try {
-      const url =  import.meta.env.VITE_API_URL || "http://localhost:3000";
-      await axios.post(`${url}/api/users`, { name: trimmed });
+      await axios.post('api/users', { name: trimmed });
     } catch (error) {
       console.error("Error saving user:", error);
     }
