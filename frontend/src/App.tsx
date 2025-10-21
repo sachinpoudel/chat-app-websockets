@@ -164,7 +164,7 @@ useEffect(() => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-zinc-100 p-4 font-inter">
+    <div className="min-h-screen flex items-center justify-center bg-gray-300 p-4 font-inter">
       {showNamePopup && (
         <div className="fixed inset-0 flex items-center justify-center z-40">
           <div className="bg-white rounded-xl shadow-lg max-w-md p-6">
@@ -175,10 +175,10 @@ useEffect(() => {
                 autoFocus
                 value={inputName}
                 onChange={(e) => setInputName(e.target.value)}
-                className="w-full border border-gray-200 rounded-md px-3 py-2 outline-green-500 placeholder-gray-400"
+                className="w-full border border-gray-200 rounded-md px-3 py-2 outline-gray-500 placeholder-gray-400"
                 placeholder="Your name"
               />
-              <button type="submit" className="block ml-auto mt-3 px-4 py-1.5 rounded-full bg-green-500 text-white font-medium">
+              <button type="submit" className="block ml-auto mt-3 px-4 py-1.5 rounded-full bg-gray-500 text-white font-medium">
                 Continue
               </button>
             </form>
@@ -188,8 +188,8 @@ useEffect(() => {
 
       {!showNamePopup && (
         <div className="w-full max-w-2xl h-[90vh] bg-white rounded-xl shadow-md flex flex-col overflow-hidden">
-          <div className="flex items-center gap-3 px-4 py-3 border-b border-gray-200">
-            <div className="h-10 w-10 rounded-full bg-[#075E54] flex items-center justify-center text-white font-semibold">R</div>
+          <div className="flex items-center gap-3 px-4 py-3 border-b border-green-200">
+            <div className="h-10 w-10 rounded-full bg-[#075E54] flex items-center justify-center text-white font-semibold">G</div>
             <div className="flex-1">
               <div className="text-sm font-medium text-[#303030]">GroupChat</div>
               {typers.length ? (
@@ -233,7 +233,7 @@ useEffect(() => {
           </div>
 
           <div className="px-4 py-3 border-t border-gray-200 bg-white">
-            <div className="flex items-center justify-between gap-4 border border-gray-300 rounded-full">
+            <div className="flex items-center justify-between gap-4 border border-green-300 rounded-full">
               <textarea
                 rows={1}
                 value={text}
@@ -242,7 +242,7 @@ useEffect(() => {
                 placeholder="Type a message..."
                 className="w-full resize-none px-4 py-4 text-sm outline-none"
               />
-              <button onClick={sendMessage} className="bg-green-500 text-white px-4 py-2 mr-2 rounded-full text-sm font-medium">
+              <button onClick={sendMessage} className="bg-gray-500 text-white px-4 py-2 mr-2 rounded-full text-sm font-medium">
                 Send
               </button>
             </div>
