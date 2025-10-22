@@ -6,6 +6,7 @@ import { Server } from "socket.io";
 import mongoose from "mongoose";
 import { Message } from "./model/msgSchema.js";
 import { addMsg, getMessages } from "./controller/msgController.js";
+import { User } from "./model/nameSchema.js";
 
 const app = express();
 const server = createServer(app);
@@ -112,11 +113,12 @@ mongoose
     process.exit(1);
   });
 
-// Simple user endpoint (just echo back)
 app.post("/api/users", async (req: Request, res: Response) => {
   try {
     const { name } = req.body || {};
     if (!name) return res.status(400).json({ msg: "name required" });
+    const saveUser = new User({ name });
+    await saveUser.save();
     return res.status(201).json({ ok: true, name });
   } catch {
     return res.status(500).json({ ok: false });
