@@ -278,7 +278,9 @@ const res = await axios.get(`${backendUrl}/api/users`);
                     <div className="h-8 w-8 rounded-full bg-[#075E54] flex items-center justify-center text-white font-semibold">
                       {u.charAt(0).toUpperCase()}
                     </div>
-                    <span className="text-sm text-[#303030] capitalize">{u}</span>
+                 <span className="text-sm text-[#303030] capitalize">
+            {u} {u === userName && <span className="text-xs text-green-600">(You)</span>}
+          </span>
                   </li>
                 ))}
               </ul>
