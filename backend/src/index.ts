@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 import { Message } from "./model/msgSchema.js";
 import { addMsg, getMessages } from "./controller/msgController.js";
 import { User } from "./model/nameSchema.js";
+import { addUser, getAllUsers } from "./controller/userController.js";
 
 const app = express();
 const server = createServer(app);
@@ -113,17 +114,8 @@ mongoose
     process.exit(1);
   });
 
-app.post("/api/users", async (req: Request, res: Response) => {
-  try {
-    const { name } = req.body || {};
-    if (!name) return res.status(400).json({ msg: "name required" });
-    const saveUser = new User({ name });
-    await saveUser.save();
-    return res.status(201).json({ ok: true, name });
-  } catch {
-    return res.status(500).json({ ok: false });
-  }
-});
+app.post('/api/users', addUser)
+app.get('/api/users', getAllUsers)
 
 app.post("/api/messages", addMsg); // for 1:1 (optional)
 app.get("/api/messages", getMessages); // group history

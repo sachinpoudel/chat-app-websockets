@@ -23,6 +23,8 @@ const App = () => {
   const [messages, setMessages] = useState<Array<{ id: any; sender: string; text: string; ts: number }>>([]);
   const [text, setText] = useState("");
 
+
+  const [allUsers , setallUsers] = useState<string[]>([]);
   // Socket setup
   useEffect(() => {
     const s = (socket.current = connectWS());
@@ -113,6 +115,26 @@ const App = () => {
     })();
   }, []);
 
+
+
+
+// Fetch all users who ever joined (runs once on mount)
+useEffect(() => {
+  (async () => {
+    try {
+      const base = import.meta.env.VITE_BACKEND_URL;
+      const res = await axios.get(`${base}/api/users`);
+      const userNames = res.data.map((u: any) => u.name);
+      setallUsers(userNames);
+      console.log("Fetched all users:", userNames);
+    } catch (error) {
+      console.error("Error fetching all users:", error);
+    }
+  })();
+}, []);
+
+
+
   // Auto-scroll
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -135,7 +157,9 @@ const App = () => {
       const backendUrl = import.meta.env.VITE_BACKEND_URL;
       await axios.post(`${backendUrl}/api/users`, { name: trimmed });
       console.log("User saved successfully", trimmed);
-    } catch (error) {
+const res = await axios.get(`${backendUrl}/api/users`);
+    const userNames = res.data.map((u: any) => u.name);
+    setallUsers(userNames);    } catch (error) {
       console.error("Error saving user:", error);
     }
   }
@@ -285,7 +309,7 @@ const App = () => {
   <div className="w-full bg-white rounded-xl shadow-md p-4 h-[90vh]">
     <h2 className="text-lg font-semibold mb-4 text-center">All Users</h2>
     <ul className="space-y-2 max-h-[80vh] overflow-y-auto">
-      {users.map((u) => (
+      {allUsers.map((u) => (
         <li key={u} className="flex items-center gap-3">
           <div className={`h-8 w-8 rounded-full ${u === userName ? 'bg-green-600' : 'bg-[#075E54]'} flex items-center justify-center text-white font-semibold`}>
             {u.charAt(0).toUpperCase()}
