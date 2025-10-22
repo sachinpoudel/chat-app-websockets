@@ -349,7 +349,7 @@ const App = () => {
   useEffect(() => {
     (async () => {
       try {
-        const base = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
+        const base = import.meta.env.VITE_BACKEND_URL;
         const res = await axios.get(`${base}/api/messages`);
         const serverMsgs = res.data
           .map((m: any) => ({
@@ -385,7 +385,7 @@ const App = () => {
     socket.current.emit("join", trimmed);
     setUserName(trimmed);
     try {
-      const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
+      const backendUrl = import.meta.env.VITE_BACKEND_URL;
       await axios.post(`${backendUrl}/api/users`, { name: trimmed });
     } catch (error) {
       console.error("Error saving user:", error);
