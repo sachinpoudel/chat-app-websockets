@@ -262,11 +262,11 @@ const App = () => {
         </div>
         <div>
           {/* //users who joined the chat */}
-          <div className=" hidden lg:block text-xs text-gray-500 truncate">
+          {/* <div className=" hidden lg:block text-xs text-gray-500 truncate">
             <div className="w-full bg-white rounded-xl shadow-md p-4 h-[90vh]">
               <h2 className="text-lg font-semibold mb-4 text-center">All Users</h2>
               <ul className="space-y-2 max-h-[80vh] overflow-y-auto">
-              {users.map((u) => (
+              {userName.split('').map((u) => (
                   <li key={u} className="flex items-center gap-3">
                     <div className="h-8 w-8 rounded-full bg-[#075E54] flex items-center justify-center text-white font-semibold">
                       {u.charAt(0).toUpperCase()}
@@ -276,8 +276,34 @@ const App = () => {
                 ))}
               </ul>
             </div>
+  </div> */}
+
+
+
+{/* All Users section */}
+<div className="hidden lg:block text-xs text-gray-500 truncate">
+  <div className="w-full bg-white rounded-xl shadow-md p-4 h-[90vh]">
+    <h2 className="text-lg font-semibold mb-4 text-center">All Users</h2>
+    <ul className="space-y-2 max-h-[80vh] overflow-y-auto">
+      {users.map((u) => (
+        <li key={u} className="flex items-center gap-3">
+          <div className={`h-8 w-8 rounded-full ${u === userName ? 'bg-green-600' : 'bg-[#075E54]'} flex items-center justify-center text-white font-semibold`}>
+            {u.charAt(0).toUpperCase()}
+          </div>
+          <span className="text-sm text-[#303030] capitalize">
+            {u} {u === userName && <span className="text-xs text-green-600">(You)</span>}
+          </span>
+        </li>
+      ))}
+    </ul>
   </div>
 </div>
+
+
+
+</div>
+
+
         </div>
       )}
     </div>
