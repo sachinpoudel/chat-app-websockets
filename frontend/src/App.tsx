@@ -204,8 +204,8 @@ const res = await axios.get(`${backendUrl}/api/users`);
       )}
 
       {!showNamePopup && (
-        <div className="w-full flex flex-col md:flex-row lg:flex-cols-[80%] justify-items-center gap-4">
-        <div className="w-full max-w-4xl h-[90vh] bg-white rounded-xl shadow-md flex flex-col overflow-hidden"> 
+        <div className="w-full flex flex-col md:flex-row lg:flex-cols- justify-items-center gap-4">
+        <div className="w-[70%] max-w-4xl h-[90vh] bg-white rounded-xl shadow-md flex flex-col overflow-hidden"> 
           <div className="flex items-center gap-3 px-4 py-3 border-b border-green-200">
             <div className="h-10 w-10 rounded-full bg-[#075E54] flex items-center justify-center text-white font-semibold">G</div>
             <div className="flex-1">
@@ -269,7 +269,8 @@ const res = await axios.get(`${backendUrl}/api/users`);
             </div>
           </div>
         </div>
-        <div className=" hidden lg:block w-60 overflow-hidden ">
+        {/* active users */}
+        <div className=" hidden lg:block w-[15%] overflow-hidden ">
             <div className="w-full bg-white rounded-xl shadow-md p-4 h-[90vh]">
               <h2 className="text-lg font-semibold mb-4 text-center">Active Users</h2>
               <ul className="space-y-2 max-h-[80vh] overflow-y-auto">
@@ -307,7 +308,7 @@ const res = await axios.get(`${backendUrl}/api/users`);
 
 
 {/* All Users section */}
-<div className="hidden lg:block text-xs text-gray-500 truncate">
+<div className="hidden md:block lg:block w-full text-xs text-gray-500 truncate">
   <div className="w-full bg-white rounded-xl shadow-md p-4 h-[90vh]">
     <h2 className="text-lg font-semibold mb-4 text-center">All Users</h2>
     <ul className="space-y-2 max-h-[80vh] overflow-y-auto">
