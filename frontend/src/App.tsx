@@ -387,6 +387,7 @@ const App = () => {
     try {
       const backendUrl = import.meta.env.VITE_BACKEND_URL;
       await axios.post(`${backendUrl}/api/users`, { name: trimmed });
+      console.log("User saved successfully", trimmed);
     } catch (error) {
       console.error("Error saving user:", error);
     }
