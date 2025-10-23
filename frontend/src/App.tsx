@@ -198,12 +198,15 @@ const res = await axios.get(`${backendUrl}/api/users`);
                 autoFocus
                 value={inputName}
                 onChange={(e) => setInputName(e.target.value)}
-                className="w-full border border-gray-200 rounded-md px-3 py-2 outline-gray-500 placeholder-gray-400"
+                className="w-full border border-black rounded-md px-3 py-2 outline-black  placeholder-gray-400"
                 placeholder="Your name"
               />
-              <button type="submit" className="block ml-auto mt-3 px-4 py-1.5 rounded-full bg-gray-500 text-white font-medium">
-                Continue
-              </button>
+            <button type="submit" className=" m-4 relative ml-auto inline-flex h-12 overflow-hidden rounded-full p-1 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
+  <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
+  <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl">
+   Continue
+  </span>
+</button>
             </form>
           </div>
         </div>
@@ -241,7 +244,7 @@ const res = await axios.get(`${backendUrl}/api/users`);
                 <div key={m.id} className={`flex ${mine ? "justify-end" : "justify-start"}`}>
                   <div
                     className={`max-w-[78%] p-3 my-2 rounded-[18px] text-sm leading-5 shadow-sm ${
-                      mine ? "bg-[#DCF8C6] text-[#303030] rounded-br-2xl" : "bg-white text-[#303030] rounded-bl-2xl"
+                      mine ? "bg-pink-200 text-[#303030] rounded-br-2xl" : "bg-gray-300 text-[#303030] rounded-bl-2xl"
                     }`}
                   >
                     <div className="break-words whitespace-pre-wrap">{m.text}</div>
@@ -266,10 +269,10 @@ const res = await axios.get(`${backendUrl}/api/users`);
                 placeholder="Type a message..."
                 className="w-full resize-none px-4 py-4 text-sm outline-none"
               />
-           <button onClick={sendMessage} className="relative inline-flex h-12 overflow-hidden rounded-2xl p-3 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
-  <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
-  <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-2xl bg-slate-950 p-3 text-sm font-medium text-white backdrop-blur-3xl">
-   Send
+        <button  onClick={sendMessage} className="px-8 py-3 rounded-full relative bg-slate-700 text-white text-sm hover:shadow-2xl hover:shadow-white/[0.1] transition duration-200 border border-slate-600">
+  <div className="absolute inset-x-0 h-px w-1/2 mx-auto -top-px shadow-2xl  bg-gradient-to-r from-transparent via-teal-500 to-transparent" />
+  <span className="relative z-20">
+    Send
   </span>
 </button>
             </div>
