@@ -21,6 +21,7 @@ const App = () => {
 
   // Start empty; load from server only
   const [messages, setMessages] = useState<Array<{ id: any; sender: string; text: string; ts: number }>>([]);
+  const [privateMsg , setPrivateMsg] = useState<Array<{ id: any; from: string; to:string; text: string; ts: number }>>([]);
   const [text, setText] = useState("");
 
 
@@ -47,6 +48,10 @@ const App = () => {
     const onMessage = (msg: { id: any; sender: string; text: string; ts: number }) => {
       setMessages((m) => [...m, msg]);
     };
+
+    const onPrivateMsg = (data:{ id: any; from: string; to:string; text: string; ts: number }) => {
+      setPrivateMsg((m) => [...m, data]);
+    };
     const onTyping = (name: string) => setTypers((prev) => (prev.includes(name) ? prev : [...prev, name]));
     const onStopTyping = (name: string) => setTypers((prev) => prev.filter((n) => n !== name));
 
@@ -54,6 +59,7 @@ const App = () => {
     s.on("presence", onPresence);
     s.on("group_notice", onGroupNotice);
     s.on("message", onMessage);
+    s.on("private_msg", onPrivateMsg);
     s.on("typing", onTyping);
     s.on("stop_typing", onStopTyping);
 
@@ -204,8 +210,8 @@ const res = await axios.get(`${backendUrl}/api/users`);
       )}
 
       {!showNamePopup && (
-        <div className="w-full flex flex-col md:flex-row lg:flex-cols- justify-items-center gap-4">
-        <div className="w-[70%] max-w-4xl h-[90vh] bg-white rounded-xl shadow-md flex flex-col overflow-hidden"> 
+        <div className="w-full flex  md:flex-row lg:flex-row justify-items-center gap-4">
+        <div className="w-full max-w-4xl h-[90vh] bg-white rounded-xl shadow-md flex flex-col overflow-hidden"> 
           <div className="flex items-center gap-3 px-4 py-3 border-b border-green-200">
             <div className="h-10 w-10 rounded-full bg-[#075E54] flex items-center justify-center text-white font-semibold">G</div>
             <div className="flex-1">

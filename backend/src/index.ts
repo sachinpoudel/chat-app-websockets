@@ -85,6 +85,42 @@ io.on("connection", (socket) => {
     }
   });
 
+
+// socket.on("private_msg", async (data: { from: string; to: string; text: string }) => {
+//   try {
+//     const { from, to, text } = data;
+//     const saved = await Message.create({
+//       room: "private",
+//       sender: from,
+//       message: { text },
+//       text,
+//       ts: new Date(),
+//     });
+//     console.log("Private message saved:", saved);
+//     // Emit only to the sender and receiver if they are connected
+//     const senderSocket = Array.from(io.sockets.sockets.values()).find((s) => s.id === from);
+//     const receiverSocket = Array.from(io.sockets.sockets.values()).find((s) => s.id === to);
+//     if (senderSocket && receiverSocket) {
+//       senderSocket.emit("private_msg", {
+//         from,
+//         to,
+//         text,
+//         ts: new Date(),
+//       });
+//       receiverSocket.emit("private_msg", {
+//         from,
+//         to,
+//         text,
+//         ts: new Date(),
+//       });
+//     }
+//   } catch (error) {
+//     console.error("Error handling private message:", error);
+//   }
+// })
+
+
+
   socket.on("typing", (userName: string) => {
     socket.to(ROOM).emit("typing", userName);
   });

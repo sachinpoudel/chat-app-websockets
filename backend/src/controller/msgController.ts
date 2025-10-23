@@ -18,7 +18,6 @@ export const addMsg = async (req: Request, res: Response) => {
   }
 };
 
-// Default: return messages for the "group" room
 export const getMessages = async (_req: Request, res: Response) => {
   try {
     const ROOM = "group";
