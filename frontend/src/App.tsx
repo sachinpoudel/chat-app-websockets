@@ -21,7 +21,7 @@ const App = () => {
 
   // Start empty; load from server only
   const [messages, setMessages] = useState<Array<{ id: any; sender: string; text: string; ts: number }>>([]);
-  const [privateMsg , setPrivateMsg] = useState<Array<{ id: any; from: string; to:string; text: string; ts: number }>>([]);
+  // const [privateMsg , setPrivateMsg] = useState<Array<{ id: any; from: string; to:string; text: string; ts: number }>>([]);
   const [text, setText] = useState("");
 
 
@@ -49,9 +49,9 @@ const App = () => {
       setMessages((m) => [...m, msg]);
     };
 
-    const onPrivateMsg = (data:{ id: any; from: string; to:string; text: string; ts: number }) => {
-      setPrivateMsg((m) => [...m, data]);
-    };
+    // const onPrivateMsg = (data:{ id: any; from: string; to:string; text: string; ts: number }) => {
+    //   setPrivateMsg((m) => [...m, data]);
+    // };
     const onTyping = (name: string) => setTypers((prev) => (prev.includes(name) ? prev : [...prev, name]));
     const onStopTyping = (name: string) => setTypers((prev) => prev.filter((n) => n !== name));
 
@@ -59,7 +59,7 @@ const App = () => {
     s.on("presence", onPresence);
     s.on("group_notice", onGroupNotice);
     s.on("message", onMessage);
-    s.on("private_msg", onPrivateMsg);
+    // s.on("private_msg", onPrivateMsg);
     s.on("typing", onTyping);
     s.on("stop_typing", onStopTyping);
 
