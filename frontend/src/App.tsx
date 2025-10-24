@@ -42,8 +42,9 @@ const App = () => {
       lastNotice.current = { name: joinedName, ts: now };
       setMessages((prev) => [
         ...prev,
-        { id: now, sender: "system", text: `${joinedName} joined the chat ${new Date().toLocaleTimeString()}`, ts: now },
+        { id: now, sender: "system", text: `${joinedName} joined the chat`, ts: now },
       ]);
+      console.log(`${joinedName} joined the chat`);
     };
     const onMessage = (msg: { id: any; sender: string; text: string; ts: number }) => {
       setMessages((m) => [...m, msg]);

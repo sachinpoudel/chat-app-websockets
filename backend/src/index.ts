@@ -53,27 +53,27 @@ io.on("connection", (socket) => {
       io.to(ROOM).emit("presence", getRoomUserNames(ROOM));
 
       // Only emit join notice if this is a new join
-      if (alreadyJoined) {
-        
-          const recentJoin = await Message.findOne({
-            room: ROOM,
-            sender: "system",
-            text: `${name} joined the chat ${new Date().toLocaleString()}`,
-            ts: { $gte: new Date(Date.now() - 5 * 60 * 1000) }
-          });
+    if (!alreadyJoined) {
+      const recentJoin = await Message.findOne({
+        room: ROOM,
+        sender: "system",
+        text: `${name} joined the chat`,
+        ts: { $gte: new Date(Date.now() - 5 * 60 * 1000) }
+      });
 
       if (!recentJoin) {
+        // Save system message
         await Message.create({
           room: ROOM,
           sender: "system",
-          message: { text: `${name} joined the chat at ${new Date().toLocaleString()}` },
-          text: `${name} joined the chat at ${new Date().toLocaleString()}`,
+          message: { text: `${name} joined the chat` },
+          text: `${name} joined the chat`,
           ts: new Date(),
         });
 
-        io.to(ROOM).emit("group_notice", name);      
-
-      }}
+        io.to(ROOM).emit("group_notice", name);
+      }
+    }
     } catch (e) {
       console.error("join error:", e);
     }
