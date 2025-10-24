@@ -66,7 +66,7 @@ io.on("connection", (socket) => {
         await Message.create({
           room: ROOM,
           sender: "system",
-          message: { text: `${name} joined the chat ${new Date().toLocaleString()}` },
+          message: { text: `${name} joined the chat` },
           text: `${name} joined the chat ${new Date().toLocaleString()}`,
           ts: new Date(),
         });
