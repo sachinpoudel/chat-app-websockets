@@ -58,7 +58,7 @@ io.on("connection", (socket) => {
           const recentJoin = await Message.findOne({
             room: ROOM,
             sender: "system",
-            text: `${name} joined the chat`,
+            text: `${name} joined the chat ${new Date().toLocaleString()}`,
             ts: { $gte: new Date(Date.now() - 5 * 60 * 1000) }
           });
 
@@ -66,8 +66,8 @@ io.on("connection", (socket) => {
         await Message.create({
           room: ROOM,
           sender: "system",
-          message: { text: `${name} joined the chat` },
-          text: `${name} joined the chat`,
+          message: { text: `${name} joined the chat ${new Date().toLocaleString()}` },
+          text: `${name} joined the chat ${new Date().toLocaleString()}`,
           ts: new Date(),
         });
 
