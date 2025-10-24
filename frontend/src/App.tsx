@@ -68,6 +68,8 @@ const App = () => {
       s.off("presence", onPresence);
       s.off("group_notice", onGroupNotice);
       s.off("message", onMessage);
+      
+      
       s.off("typing", onTyping);
       s.off("stop_typing", onStopTyping);
     };

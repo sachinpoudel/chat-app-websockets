@@ -56,8 +56,27 @@ io.on("connection", (socket) => {
 
       // Only emit join notice if this is a new join
       if (!alreadyJoined) {
-        io.to(ROOM).emit("group_notice", name);
-      }
+        
+          const recentJoin = await Message.findOne({
+            room: ROOM,
+            sender: "system",
+            text: `${name} joined the chat`,
+            ts: { $gte: new Date(Date.now() - 5 * 60 * 1000) }
+          });
+
+      if (!recentJoin) {
+        // Save system message
+        await Message.create({
+          room: ROOM,
+          sender: "system",
+          message: { text: `${name} joined the chat` },
+          text: `${name} joined the chat`,
+          ts: new Date(),
+        });
+
+        io.to(ROOM).emit("group_notice", name);      
+
+      }}
     } catch (e) {
       console.error("join error:", e);
     }
