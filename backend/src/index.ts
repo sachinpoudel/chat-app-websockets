@@ -47,11 +47,9 @@ io.on("connection", (socket) => {
         roomUsers.set(ROOM, users);
       }
 
-      // Check if already joined with same name to avoid duplicate notice
       const alreadyJoined = users.get(socket.id) === name;
       users.set(socket.id, name);
 
-      // Broadcast presence first
       io.to(ROOM).emit("presence", getRoomUserNames(ROOM));
 
       // Only emit join notice if this is a new join
@@ -65,7 +63,6 @@ io.on("connection", (socket) => {
           });
 
       if (!recentJoin) {
-        // Save system message
         await Message.create({
           room: ROOM,
           sender: "system",
