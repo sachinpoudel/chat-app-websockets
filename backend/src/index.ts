@@ -53,7 +53,7 @@ io.on("connection", (socket) => {
       io.to(ROOM).emit("presence", getRoomUserNames(ROOM));
 
       // Only emit join notice if this is a new join
-      if (!alreadyJoined) {
+      if (alreadyJoined) {
         
           const recentJoin = await Message.findOne({
             room: ROOM,
@@ -66,8 +66,8 @@ io.on("connection", (socket) => {
         await Message.create({
           room: ROOM,
           sender: "system",
-          message: { text: `${name} joined the chat` },
-          text: `${name} joined the chat ${new Date().toLocaleString()}`,
+          message: { text: `${name} joined the chat at ${new Date().toLocaleString()}` },
+          text: `${name} joined the chat at ${new Date().toLocaleString()}`,
           ts: new Date(),
         });
 
