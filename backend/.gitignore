@@ -10,3 +10,7 @@ build/
 # Logs
 logs/
 *.log
+
+.env
+.env.local
+.env.development.local

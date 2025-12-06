@@ -1,0 +1,65 @@
+services:
+  backend-dev:
+    build:
+      context: .
+      dockerfile: ./backend/Dockerfile
+      target: dev
+    volumes:
+      - ./backend:/app
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGO_URL=mongodb://db:27017/chat
+    depends_on:
+      - db
+
+  frontend-dev:
+    build:
+      context: .
+      dockerfile: ./frontend/Dockerfile
+      target: dev
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_BACKEND_URL=http://localhost:5000
+      - VITE_WS_URL=ws://localhost:5000
+    depends_on:
+      - backend-dev
+
+  backend-prod:
+    build:
+      context: .
+      dockerfile: ./backend/Dockerfile
+      target: prod
+    ports:
+      - "8080:5000"
+    environment:
+      - MONGO_URL=mongodb://db:27017/chat
+    depends_on:
+      - db
+
+  frontend-prod:
+    build:
+      context: .
+      dockerfile: ./frontend/Dockerfile
+      target: prod
+      environment:
+        VITE_BACKEND_URL: "http://backend-prod:5000"
+        VITE_WS_URL: "ws://backend-prod:5000"
+    ports:
+      - "8000:80"
+    depends_on:
+      - backend-prod
+
+  db:
+    image: mongo:latest
+    container_name: mongo_db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
