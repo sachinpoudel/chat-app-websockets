@@ -21,8 +21,8 @@ export const addMsg = async (req: Request, res: Response) => {
 export const getMessages = async (_req: Request, res: Response) => {
   try {
     const ROOM = "group";
-    const limit = 200;
-    const messages = await Message.find({ room: ROOM }).sort({ ts: 1 }).limit(limit);
+    const limit = 100;
+    const messages = await Message.find({ room: ROOM }).sort({ ts: 1 }).limit(limit).lean();
     res.json(messages);
   } catch (ex) {
     console.error("Error retrieving messages:", ex);

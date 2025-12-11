@@ -1,7 +1,3 @@
-
-
-
-
 import React from "react";
 import { useEffect, useRef, useState } from "react";
 import { connectWS } from "./ws";
@@ -13,19 +9,24 @@ const App = () => {
   const socket = useRef<any>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
-  const [userName, setUserName] = useState(() => localStorage.getItem("userName") || "");
-  const [showNamePopup, setShowNamePopup] = useState(() => !localStorage.getItem("userName"));
+  const [userName, setUserName] = useState(
+    () => localStorage.getItem("userName") || ""
+  );
+  const [showNamePopup, setShowNamePopup] = useState(
+    () => !localStorage.getItem("userName")
+  );
   const [inputName, setInputName] = useState("");
   const [typers, setTypers] = useState<string[]>([]);
   const [users, setUsers] = useState<string[]>([]);
 
   // Start empty; load from server only
-  const [messages, setMessages] = useState<Array<{ id: any; sender: string; text: string; ts: number }>>([]);
+  const [messages, setMessages] = useState<
+    Array<{ id: any; sender: string; text: string; ts: number }>
+  >([]);
   // const [privateMsg , setPrivateMsg] = useState<Array<{ id: any; from: string; to:string; text: string; ts: number }>>([]);
   const [text, setText] = useState("");
 
-
-  const [allUsers , setallUsers] = useState<string[]>([]);
+  const [allUsers, setallUsers] = useState<string[]>([]);
   // Socket setup
   useEffect(() => {
     const s = (socket.current = connectWS());
@@ -36,25 +37,41 @@ const App = () => {
     const onPresence = (list: string[]) => setUsers(list);
     const onGroupNotice = (joinedName: string) => {
       const now = Date.now();
-      if (lastNotice.current && lastNotice.current.name === joinedName && now - lastNotice.current.ts < 1000) {
+      if (
+        lastNotice.current &&
+        lastNotice.current.name === joinedName &&
+        now - lastNotice.current.ts < 1000
+      ) {
         return;
       }
       lastNotice.current = { name: joinedName, ts: now };
       setMessages((prev) => [
         ...prev,
-        { id: now, sender: "system", text: `${joinedName} joined the chat`, ts: now },
+        {
+          id: now,
+          sender: "system",
+          text: `${joinedName} joined the chat`,
+          ts: now,
+        },
       ]);
       console.log(`${joinedName} joined the chat`);
     };
-    const onMessage = (msg: { id: any; sender: string; text: string; ts: number }) => {
+    const onMessage = (msg: {
+      id: any;
+      sender: string;
+      text: string;
+      ts: number;
+    }) => {
       setMessages((m) => [...m, msg]);
     };
 
     // const onPrivateMsg = (data:{ id: any; from: string; to:string; text: string; ts: number }) => {
     //   setPrivateMsg((m) => [...m, data]);
     // };
-    const onTyping = (name: string) => setTypers((prev) => (prev.includes(name) ? prev : [...prev, name]));
-    const onStopTyping = (name: string) => setTypers((prev) => prev.filter((n) => n !== name));
+    const onTyping = (name: string) =>
+      setTypers((prev) => (prev.includes(name) ? prev : [...prev, name]));
+    const onStopTyping = (name: string) =>
+      setTypers((prev) => prev.filter((n) => n !== name));
 
     s.on("connect", onConnect);
     s.on("presence", onPresence);
@@ -69,8 +86,7 @@ const App = () => {
       s.off("presence", onPresence);
       s.off("group_notice", onGroupNotice);
       s.off("message", onMessage);
-      
-      
+
       s.off("typing", onTyping);
       s.off("stop_typing", onStopTyping);
     };
@@ -124,25 +140,20 @@ const App = () => {
     })();
   }, []);
 
-
-
-
-// Fetch all users who ever joined (runs once on mount)
-useEffect(() => {
-  (async () => {
-    try {
-      const base = import.meta.env.VITE_BACKEND_URL;
-      const res = await axios.get(`${base}/api/users`);
-      const userNames = res.data.map((u: any) => u.name);
-      setallUsers(userNames);
-      console.log("Fetched all users:", userNames);
-    } catch (error) {
-      console.error("Error fetching all users:", error);
-    }
-  })();
-}, []);
-
-
+  // Fetch all users who ever joined (runs once on mount)
+  useEffect(() => {
+    (async () => {
+      try {
+        const base = import.meta.env.VITE_BACKEND_URL;
+        const res = await axios.get(`${base}/api/users`);
+        const userNames = res.data.map((u: any) => u.name);
+        setallUsers(userNames);
+        console.log("Fetched all users:", userNames);
+      } catch (error) {
+        console.error("Error fetching all users:", error);
+      }
+    })();
+  }, []);
 
   // Auto-scroll
   useEffect(() => {
@@ -166,9 +177,10 @@ useEffect(() => {
       const backendUrl = import.meta.env.VITE_BACKEND_URL;
       await axios.post(`${backendUrl}/api/users`, { name: trimmed });
       console.log("User saved successfully", trimmed);
-const res = await axios.get(`${backendUrl}/api/users`);
-    const userNames = res.data.map((u: any) => u.name);
-    setallUsers(userNames);    } catch (error) {
+      const res = await axios.get(`${backendUrl}/api/users`);
+      const userNames = res.data.map((u: any) => u.name);
+      setallUsers(userNames);
+    } catch (error) {
       console.error("Error saving user:", error);
     }
   }
@@ -194,8 +206,12 @@ const res = await axios.get(`${backendUrl}/api/users`);
       {showNamePopup && (
         <div className="fixed inset-0 flex items-center justify-center z-40">
           <div className="bg-white rounded-xl shadow-lg max-w-md p-6">
-            <h1 className="text-xl font-semibold text-black">Enter your name</h1>
-            <p className="text-sm text-gray-500 mt-1">Enter your name to start chatting.</p>
+            <h1 className="text-xl font-semibold text-black">
+              Enter your name
+            </h1>
+            <p className="text-sm text-gray-500 mt-1">
+              Enter your name to start chatting.
+            </p>
             <form onSubmit={handleNameSubmit} className="mt-4">
               <input
                 autoFocus
@@ -204,12 +220,15 @@ const res = await axios.get(`${backendUrl}/api/users`);
                 className="w-full border border-black rounded-md px-3 py-2 outline-black  placeholder-gray-400"
                 placeholder="Your name"
               />
-            <button type="submit" className=" m-4 relative ml-auto inline-flex h-12 overflow-hidden rounded-full p-1 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
-  <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
-  <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl">
-   Continue
-  </span>
-</button>
+              <button
+                type="submit"
+                className=" m-4 relative ml-auto inline-flex h-12 overflow-hidden rounded-full p-1 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50"
+              >
+                <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
+                <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl">
+                  Continue
+                </span>
+              </button>
             </form>
           </div>
         </div>
@@ -217,91 +236,120 @@ const res = await axios.get(`${backendUrl}/api/users`);
 
       {!showNamePopup && (
         <div className="w-full flex  md:flex-row lg:flex-row justify-items-center gap-4">
-        <div className="w-full max-w-4xl h-[90vh] bg-white rounded-xl shadow-md flex flex-col overflow-hidden"> 
-          <div className="flex items-center gap-3 px-4 py-3 border-b border-green-200">
-            <div className="h-10 w-10 rounded-full bg-[#075E54] flex items-center justify-center text-white font-semibold">G</div>
-            <div className="flex-1">
-              <div className="text-sm font-medium text-[#303030]">GroupChat</div>
-              {typers.length ? (
-                <div className="text-xs text-gray-500">{typers.join(", ")} is typing...</div>
-              ) : (
-                <div className="text-xs text-gray-500 truncate">Online ({users.length}): {users.join(", ")}</div>
-              )}
-            </div>
-            <div className="text-sm text-gray-500">
-              Signed in as <span className="font-medium text-[#303030] capitalize">{userName}</span>
-            </div>
-          </div>
-
-          <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-zinc-100 flex flex-col">
-            {messages.map((m) => {
-              if (m.sender === "system") {
-                return (
-                  <div key={m.id} className="text-center text-gray-500 text-sm mb-2">
-                    <span className="font-medium">{m.text}</span>
+          <div className="w-full max-w-4xl h-[90vh] bg-white rounded-xl shadow-md flex flex-col overflow-hidden">
+            <div className="flex items-center gap-3 px-4 py-3 border-b border-green-200">
+              <div className="h-10 w-10 rounded-full bg-[#075E54] flex items-center justify-center text-white font-semibold">
+                G
+              </div>
+              <div className="flex-1">
+                <div className="text-sm font-medium text-[#303030]">
+                  GroupChat
+                </div>
+                {typers.length ? (
+                  <div className="text-xs text-gray-500">
+                    {typers.join(", ")} is typing...
                   </div>
-                );
-              }
-              const mine = m.sender === userName;
-              return (
-                <div key={m.id} className={`flex ${mine ? "justify-end" : "justify-start"}`}>
+                ) : (
+                  <div className="text-xs text-gray-500 truncate">
+                    Online ({users.length}): {users.join(", ")}
+                  </div>
+                )}
+              </div>
+              <div className="text-sm text-gray-500">
+                Signed in as{" "}
+                <span className="font-medium text-[#303030] capitalize">
+                  {userName}
+                </span>
+              </div>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-zinc-100 flex flex-col">
+              {messages.map((m) => {
+                if (m.sender === "system") {
+                  return (
+                    <div
+                      key={m.id}
+                      className="text-center text-gray-500 text-sm mb-2"
+                    >
+                      <span className="font-medium">{m.text}</span>
+                    </div>
+                  );
+                }
+                const mine = m.sender === userName;
+                return (
                   <div
-                    className={`max-w-[78%] p-3 my-2 rounded-[18px] text-sm leading-5 shadow-sm ${
-                      mine ? "bg-pink-200 text-[#303030] rounded-br-2xl" : "bg-gray-300 text-[#303030] rounded-bl-2xl"
-                    }`}
+                    key={m.id}
+                    className={`flex ${mine ? "justify-end" : "justify-start"}`}
                   >
-                    <div className="break-words whitespace-pre-wrap">{m.text}</div>
-                    <div className="flex justify-between items-center mt-1 gap-16">
-                      <div className="text-[11px] font-bold">{m.sender}</div>
-                      <div className="text-[11px] text-gray-500 text-right">{formatTime(m.ts)}</div>
+                    <div
+                      className={`max-w-[78%] p-3 my-2 rounded-[18px] text-sm leading-5 shadow-sm ${
+                        mine
+                          ? "bg-pink-200 text-[#303030] rounded-br-2xl"
+                          : "bg-gray-300 text-[#303030] rounded-bl-2xl"
+                      }`}
+                    >
+                      <div className="break-words whitespace-pre-wrap">
+                        {m.text}
+                      </div>
+                      <div className="flex justify-between items-center mt-1 gap-16">
+                        <div className="text-[11px] font-bold">{m.sender}</div>
+                        <div className="text-[11px] text-gray-500 text-right">
+                          {formatTime(m.ts)}
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
-            <div ref={bottomRef} />
-          </div>
+                );
+              })}
+              <div ref={bottomRef} />
+            </div>
 
-          <div className="px-4 py-3 border-t border-gray-200 bg-white">
-            <div className="flex items-center justify-between gap-4 border border-green-300 rounded-full">
-              <textarea
-                rows={1}
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                onKeyDown={handleKeyDown}
-                placeholder="Type a message..."
-                className="w-full resize-none px-4 py-4 text-sm outline-none"
-              />
-        <button  onClick={sendMessage} className="px-8 py-3 rounded-full relative bg-slate-700 text-white text-sm hover:shadow-2xl hover:shadow-white/[0.1] transition duration-200 border border-slate-600">
-  <div className="absolute inset-x-0 h-px w-1/2 mx-auto -top-px shadow-2xl  bg-gradient-to-r from-transparent via-teal-500 to-transparent" />
-  <span className="relative z-20">
-    Send
-  </span>
-</button>
+            <div className="px-4 py-3 border-t border-gray-200 bg-white">
+              <div className="flex items-center justify-between gap-4 border border-green-300 rounded-full">
+                <textarea
+                  rows={1}
+                  value={text}
+                  onChange={(e) => setText(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  placeholder="Type a message..."
+                  className="w-full resize-none px-4 py-4 text-sm outline-none"
+                />
+                <button
+                  onClick={sendMessage}
+                  className="px-8 py-3 rounded-full relative bg-slate-700 text-white text-sm hover:shadow-2xl hover:shadow-white/[0.1] transition duration-200 border border-slate-600"
+                >
+                  <div className="absolute inset-x-0 h-px w-1/2 mx-auto -top-px shadow-2xl  bg-gradient-to-r from-transparent via-teal-500 to-transparent" />
+                  <span className="relative z-20">Send</span>
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-        {/* active users */}
-        <div className=" hidden lg:block w-[15%] overflow-hidden ">
+          {/* active users */}
+          <div className=" hidden lg:block w-full overflow-hidden ">
             <div className="w-full bg-white rounded-xl shadow-md p-4 h-[90vh]">
-              <h2 className="text-lg font-semibold mb-4 text-center">Active Users</h2>
+              <h2 className="text-lg font-semibold mb-4 text-center">
+                Active Users
+              </h2>
               <ul className="space-y-2 max-h-[80vh] overflow-y-auto">
                 {users.map((u) => (
                   <li key={u} className="flex items-center gap-3">
                     <div className="h-8 w-8 rounded-full bg-[#075E54] flex items-center justify-center text-white font-semibold">
                       {u.charAt(0).toUpperCase()}
                     </div>
-                 <span className="text-sm text-[#303030] capitalize">
-            {u} {u === userName && <span className="text-xs text-green-600">(You)</span>}
-          </span>
+                    <span className="text-sm text-[#303030] capitalize">
+                      {u}{" "}
+                      {u === userName && (
+                        <span className="text-xs text-green-600">(You)</span>
+                      )}
+                    </span>
                   </li>
                 ))}
               </ul>
             </div>
-        </div>
-        <div>
-          {/* //users who joined the chat */}
-          {/* <div className=" hidden lg:block text-xs text-gray-500 truncate">
+          </div>
+          <div>
+            {/* //users who joined the chat */}
+            {/* <div className=" hidden lg:block text-xs text-gray-500 truncate">
             <div className="w-full bg-white rounded-xl shadow-md p-4 h-[90vh]">
               <h2 className="text-lg font-semibold mb-4 text-center">All Users</h2>
               <ul className="space-y-2 max-h-[80vh] overflow-y-auto">
@@ -317,32 +365,34 @@ const res = await axios.get(`${backendUrl}/api/users`);
             </div>
   </div> */}
 
-
-
-{/* All Users section */}
-<div className="hidden md:block lg:block w-full text-xs text-gray-500 truncate">
-  <div className="w-full bg-white rounded-xl shadow-md p-4 h-[90vh]">
-    <h2 className="text-lg font-semibold mb-4 text-center">All Users</h2>
-    <ul className="space-y-2 max-h-[80vh] overflow-y-auto">
-      {allUsers.map((u) => (
-        <li key={u} className="flex items-center gap-3">
-          <div className={`h-8 w-8 rounded-full ${u === userName ? 'bg-green-600' : 'bg-[#075E54]'} flex items-center justify-center text-white font-semibold`}>
-            {u.charAt(0).toUpperCase()}
+            {/* All Users section */}
+            <div className="hidden md:block lg:block w-full text-xs text-gray-500 truncate">
+              <div className="w-full bg-white rounded-xl shadow-md p-4 h-[90vh]">
+                <h2 className="text-lg font-semibold mb-4 text-center">
+                  All Users
+                </h2>
+                <ul className="space-y-2 max-h-[80vh] overflow-y-auto">
+                  {allUsers.map((u) => (
+                    <li key={u} className="flex items-center gap-3">
+                      <div
+                        className={`h-8 w-8 rounded-full ${
+                          u === userName ? "bg-green-600" : "bg-[#075E54]"
+                        } flex items-center justify-center text-white font-semibold`}
+                      >
+                        {u.charAt(0).toUpperCase()}
+                      </div>
+                      <span className="text-sm text-[#303030] capitalize">
+                        {u}{" "}
+                        {u === userName && (
+                          <span className="text-xs text-green-600">(You)</span>
+                        )}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
           </div>
-          <span className="text-sm text-[#303030] capitalize">
-            {u} {u === userName && <span className="text-xs text-green-600">(You)</span>}
-          </span>
-        </li>
-      ))}
-    </ul>
-  </div>
-</div>
-
-
-
-</div>
-
-
         </div>
       )}
     </div>
@@ -350,4 +400,3 @@ const res = await axios.get(`${backendUrl}/api/users`);
 };
 
 export default App;
-

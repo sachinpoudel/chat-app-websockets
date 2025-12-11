@@ -22,7 +22,7 @@ export const addUser = async (req: Request, res: Response) => {
 
 export const getAllUsers = async (_req: Request, res: Response) => {
   try {
-    const users = await User.find().sort({ joinedAt: -1 });
+    const users = await User.find().sort({ joinedAt: -1 }).select("name").lean();
     res.json(users);
   } catch (error) {
     console.error("Error fetching users:", error);

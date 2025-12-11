@@ -4,7 +4,6 @@ const MessageSchema = new mongoose.Schema(
   {
     room: { type: String, index: true },
     sender: { type: String, index: true },
-    // keep both for compatibility; frontend reads message.text || text
     text: String,
     message: { text: String },
     users: [String],
@@ -12,5 +11,6 @@ const MessageSchema = new mongoose.Schema(
   },
   { versionKey: false }
 );
+MessageSchema.index({ room: 1, ts: 1 });
 
 export const Message = mongoose.model("Message", MessageSchema);

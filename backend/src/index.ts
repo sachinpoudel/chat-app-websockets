@@ -19,7 +19,6 @@ const io = new Server(server, {
 });
 
 app.use(express.json());
-app.use(cors({ origin: "*" }));
 
 // Presence tracking: room -> (socketId -> userName)
 const roomUsers = new Map<string, Map<string, string>>();
