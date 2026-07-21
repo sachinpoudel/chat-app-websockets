@@ -13,11 +13,16 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin:  "https://chat-mu73.onrender.com",
+    origin: process.env.CORS_ORIGIN || "http://localhost:5173",
     methods: ["GET", "POST"],
   },
 });
 
+app.use(cors({
+  origin: process.env.CORS_ORIGIN || "http://localhost:5173",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true,
+}));
 app.use(express.json());
 
 // Presence tracking: room -> (socketId -> userName)
